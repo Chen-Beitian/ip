@@ -1,5 +1,7 @@
 import java.util.Scanner;
 public class Momo {
+    private static final String[] tasks = new String[100];
+    private static int taskCount = 0;
 
     private static void printLine() {
         System.out.println("    ____________________________________________________________");
@@ -16,19 +18,45 @@ public class Momo {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
-            if (input.equals("bye")) {
-                printLine();
-                System.out.println("    Bye. Hope to see you again soon!");
-                printLine();
+            if (isBye(input)) {
+                sayGoodbye();
                 break;
             }
-            echo(input);
+            if (isList(input)) {
+                showList();
+                continue;
+            }
+            addTask(input);
         }
     }
 
-    private static void echo(String input) {
+    private static boolean isBye(String input) {
+        return input.equals("bye");
+    }
+
+    private static boolean isList(String input) {
+        return input.equals("list");
+    }
+
+    private static void addTask(String input) {
+        tasks[taskCount] = input;
+        taskCount++;
         printLine();
-        System.out.println("    " + input);
+        System.out.println("    added: " + input);
+        printLine();
+    }
+
+    private static void showList() {
+        printLine();
+        for (int i = 0; i < taskCount; i++) {
+            System.out.println("    " + (i + 1) + ". " + tasks[i]);
+        }
+        printLine();
+    }
+
+    private static void sayGoodbye() {
+        printLine();
+        System.out.println("    Bye. Hope to see you again soon!");
         printLine();
     }
 
