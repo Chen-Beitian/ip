@@ -1,7 +1,7 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 public class Momo {
-    private static final Task[] tasks = new Task[100];
-    private static int taskCount = 0;
+    private static final ArrayList<Task> tasks = new ArrayList<>();
 
     private static void printLine() {
         System.out.println("    ____________________________________________________________");
@@ -47,6 +47,10 @@ public class Momo {
         }
         if (input.startsWith("unmark")) {
             unmarkTask(input);
+            return;
+        }
+        if (input.startsWith("delete")) {
+            deleteTask(input);
             return;
         }
         addTask(input);
@@ -98,39 +102,48 @@ public class Momo {
 
     // add task to list and print confirmation message
     private static void addTaskAndConfirm(Task task) {
-        tasks[taskCount] = task;
-        taskCount++;
+        tasks.add(task);
         printLine();
         System.out.println("    Got it. I've added this task:");
         System.out.println("       " + task);
-        System.out.println("    Now you have " + taskCount + " tasks in the list.");
+        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
         printLine();
     }
 
     private static void showList() {
         printLine();
         System.out.println("    Here are the tasks in your list:");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println("    " + (i + 1) + "." + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println("    " + (i + 1) + "." + tasks.get(i));
         }
         printLine();
     }
 
     private static void markTask(String input) {
         int index = Integer.parseInt(input.split(" ")[1]) - 1;
-        tasks[index].markAsDone();
+        tasks.get(index).markAsDone();
         printLine();
         System.out.println("    Nice! I've marked this task as done:");
-        System.out.println("       " + tasks[index]);
+        System.out.println("       " + tasks.get(index));
         printLine();
     }
 
     private static void unmarkTask(String input) {
         int index = Integer.parseInt(input.split(" ")[1]) - 1;
-        tasks[index].unmark();
+        tasks.get(index).unmark();
         printLine();
         System.out.println("    OK, I've marked this task as not done yet:");
-        System.out.println("       " + tasks[index]);
+        System.out.println("       " + tasks.get(index));
+        printLine();
+    }
+
+    private static void deleteTask(String input) throws MomoException {
+        int index = Integer.parseInt(input.substring(7).trim()) - 1;
+        Task removed = tasks.remove(index);
+        printLine();
+        System.out.println("    Noted. I've removed this task:");
+        System.out.println("       " + removed);
+        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
         printLine();
     }
 
