@@ -18,11 +18,11 @@ public class Momo {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
-            if (isBye(input)) {
+            if (input.equals("bye")) {
                 sayGoodbye();
                 break;
             }
-            if (isList(input)) {
+            if (input.equals("list")) {
                 showList();
                 continue;
             }
@@ -38,19 +38,49 @@ public class Momo {
         }
     }
 
-    private static boolean isBye(String input) {
-        return input.equals("bye");
-    }
-
-    private static boolean isList(String input) {
-        return input.equals("list");
-    }
-
+    // Determine the type of task to add
     private static void addTask(String input) {
-        tasks[taskCount] = new Task(input);
+        if (input.startsWith("todo ")) {
+            addTodo(input);
+            return;
+        }
+        if (input.startsWith("deadline ")) {
+            addDeadline(input);
+            return;
+        }
+        if (input.startsWith("event ")) {
+            addEvent(input);
+            return;
+        }
+    }
+
+    private static void addTodo(String input) {
+        String description = input.substring(5);
+        addTaskAndConfirm(new Todo(description));
+    }
+
+    private static void addDeadline(String input) {
+        String rest = input.substring(9);
+        String[] parts = rest.split(" /by ", 2);
+        addTaskAndConfirm(new Deadline(parts[0], parts[1]));
+    }
+
+    private static void addEvent(String input) {
+        String rest = input.substring(6); // 去掉 "event "
+        String[] fromParts = rest.split(" /from ", 2);
+        String description = fromParts[0];
+        String[] toParts = fromParts[1].split(" /to ", 2);
+        addTaskAndConfirm(new Event(description, toParts[0], toParts[1]));
+    }
+
+    // add task to list and print confirmation message
+    private static void addTaskAndConfirm(Task task) {
+        tasks[taskCount] = task;
         taskCount++;
         printLine();
-        System.out.println("    added: " + input);
+        System.out.println("    Got it. I've added this task:");
+        System.out.println("       " + task);
+        System.out.println("    Now you have " + taskCount + " tasks in the list.");
         printLine();
     }
 

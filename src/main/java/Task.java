@@ -1,9 +1,9 @@
 public class Task {
-    private final String name;
+    protected final String description;
     private boolean isDone;
 
-    public Task(String name) {
-        this.name = name;
+    public Task(String description) {
+        this.description = description;
         this.isDone = false;
     }
 
@@ -15,20 +15,12 @@ public class Task {
         this.isDone = false;
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getStatus() {
+    protected String getStatus() {
         return isDone ? "[X]" : "[ ]";
     }
 
     @Override
     public String toString() {
-        return getStatus() + " " + name;
+        return getStatus() + " " + description;
     }
 }
