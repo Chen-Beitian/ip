@@ -14,48 +14,71 @@ public class Momo {
         printLine();
     }
 
+    private static void showError(String message) {
+        printLine();
+        System.out.println("    " + message);
+        printLine();
+    }
+
     private static void readAndRespond() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
-            if (input.equals("bye")) {
-                sayGoodbye();
-                break;
+            try {
+                handleInput(input);
+            } catch (MomoException e) {
+                showError(e.getMessage());
             }
-            if (input.equals("list")) {
-                showList();
-                continue;
-            }
-            if (input.startsWith("mark ")) {
-                markTask(input);
-                continue;
-            }
-            if (input.startsWith("unmark ")) {
-                unmarkTask(input);
-                continue;
-            }
-            addTask(input);
         }
+    }
+
+    private static void handleInput(String input) throws MomoException {
+        if (input.equals("bye")) {
+            sayGoodbye();
+            System.exit(0);
+        }
+        if (input.equals("list")) {
+            showList();
+            return;
+        }
+        if (input.startsWith("mark")) {
+            markTask(input);
+            return;
+        }
+        if (input.startsWith("unmark")) {
+            unmarkTask(input);
+            return;
+        }
+        addTask(input);
     }
 
     // Determine the type of task to add
-    private static void addTask(String input) {
-        if (input.startsWith("todo ")) {
+    private static void addTask(String input) throws MomoException {
+        if (input.startsWith("todo")) {
             addTodo(input);
             return;
         }
-        if (input.startsWith("deadline ")) {
+        if (input.startsWith("deadline")) {
             addDeadline(input);
             return;
         }
-        if (input.startsWith("event ")) {
+        if (input.startsWith("event")) {
             addEvent(input);
             return;
         }
+        throw new MomoException("Sorry, I haven't learned this instruction yet.");
     }
 
-    private static void addTodo(String input) {
-        String description = input.substring(5);
+    private static void addTodo(String input) throws MomoException {
+        String description = "";
+        if (input.startsWith("todo ")) {
+            description = input.substring(5).trim();
+        } else if (input.equals("todo")) {
+            description = "";
+        }
+        if (description.isEmpty()) {
+            throw new MomoException("Please provide a task description.");
+        }
         addTaskAndConfirm(new Todo(description));
     }
 
