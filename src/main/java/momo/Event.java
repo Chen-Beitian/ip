@@ -20,6 +20,24 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /**
+     * Returns the start time string.
+     *
+     * @return Start time string.
+     */
+    public String getFrom() {
+        return from;
+    }
+
+    /**
+     * Returns the end time string.
+     *
+     * @return End time string.
+     */
+    public String getTo() {
+        return to;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString()

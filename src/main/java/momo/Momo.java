@@ -1,8 +1,8 @@
 package momo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.IOException;
 
 /**
  * Main entry point of the Momo task management application.
@@ -97,14 +97,18 @@ public class Momo {
 
     private static void addDeadline(String input) throws MomoException {
         if (!input.startsWith("deadline ")) {
-            throw new MomoException("Usage: deadline <description> /by <time>");
+            throw new MomoException("Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>");
         }
         String rest = input.substring(9).trim();
         String[] parts = rest.split(" /by ", 2);
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new MomoException("Usage: deadline <description> /by <time>");
+            throw new MomoException("Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>");
         }
-        addTaskAndConfirm(new Deadline(parts[0].trim(), parts[1].trim()));
+        try {
+            addTaskAndConfirm(new Deadline(parts[0].trim(), Deadline.parseBy(parts[1].trim())));
+        } catch (IllegalArgumentException e) {
+            throw new MomoException("Date must be in yyyy-mm-dd or yyyy-mm-dd HHmm format.");
+        }
     }
 
     private static void addEvent(String input) throws MomoException {
