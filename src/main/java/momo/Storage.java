@@ -12,19 +12,23 @@ import java.util.List;
  * Handles saving and loading tasks from disk.
  */
 public class Storage {
-    private static final Path FILE_PATH = Paths.get("data", "momo.txt");
+    private final Path filePath;
+
+    public Storage(String filePath) {
+        this.filePath = Paths.get(filePath);
+    }
 
     /**
      * Loads tasks from file.
      * If file does not exist, returns empty list.
      */
     public List<Task> load() {
-        if (!Files.exists(FILE_PATH)) {
+        if (!Files.exists(filePath)) {
             return new ArrayList<>();
         }
         List<Task> tasks = new ArrayList<>();
         try {
-            for (String line : Files.readAllLines(FILE_PATH)) {
+            for (String line : Files.readAllLines(filePath)) {
                 Task task = parseLine(line);
                 if (task != null) {
                     tasks.add(task);
@@ -43,12 +47,12 @@ public class Storage {
      * @throws IOException If writing fails.
      */
     public void save(List<Task> tasks) throws IOException {
-        Files.createDirectories(FILE_PATH.getParent());
+        Files.createDirectories(filePath.getParent());
         List<String> lines = new ArrayList<>();
         for (Task t : tasks) {
             lines.add(toLine(t));
         }
-        Files.write(FILE_PATH, lines);
+        Files.write(filePath, lines);
     }
 
     private static String toLine(Task t) {
