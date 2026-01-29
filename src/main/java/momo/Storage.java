@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,22 +25,10 @@ public class Storage {
         List<Task> tasks = new ArrayList<>();
         try {
             for (String line : Files.readAllLines(FILE_PATH)) {
-                String trimmed = line.trim();
-                if (trimmed.isEmpty()) {
-                    continue;
+                Task task = parseLine(line);
+                if (task != null) {
+                    tasks.add(task);
                 }
-                String[] parts = trimmed.split("\\s*\\|\\s*", 2);
-                if (parts.length < 2) {
-                    tasks.add(new Todo(trimmed));
-                    continue;
-                }
-                boolean done = parts[0].trim().equals("1");
-                String desc = parts[1].trim();
-                Task t = new Todo(desc);
-                if (done) {
-                    t.markAsDone();
-                }
-                tasks.add(t);
             }
         } catch (IOException e) {
             return new ArrayList<>();
@@ -49,14 +38,77 @@ public class Storage {
 
     /**
      * Saves tasks to file, creating folder if needed.
+     *
+     * @param tasks Tasks to save.
+     * @throws IOException If writing fails.
      */
     public void save(List<Task> tasks) throws IOException {
         Files.createDirectories(FILE_PATH.getParent());
         List<String> lines = new ArrayList<>();
         for (Task t : tasks) {
-            String line = (t.isDone() ? "1" : "0") + " | " + t.description;
-            lines.add(line);
+            lines.add(toLine(t));
         }
         Files.write(FILE_PATH, lines);
+    }
+
+    private static String toLine(Task t) {
+        String done = t.isDone() ? "1" : "0";
+        if (t instanceof Deadline) {
+            Deadline d = (Deadline) t;
+            return "D | " + done + " | " + t.description + " | " + d.getBy().toString();
+        }
+        if (t instanceof Event) {
+            Event e = (Event) t;
+            return "E | " + done + " | " + t.description + " | " + e.getFrom() + " | " + e.getTo();
+        }
+        return "T | " + done + " | " + t.description;
+    }
+
+    private static Task parseLine(String line) {
+        if (line == null) {
+            return null;
+        }
+        String trimmed = line.trim();
+        if (trimmed.isEmpty()) {
+            return null;
+        }
+        String[] parts = trimmed.split("\\s*\\|\\s*");
+        if (parts.length >= 2 && (parts[0].equals("0") || parts[0].equals("1"))) {
+            Task t = new Todo(parts[1].trim());
+            if (parts[0].equals("1")) {
+                t.markAsDone();
+            }
+            return t;
+        }
+        if (parts.length < 3) {
+            return null;
+        }
+        String type = parts[0].trim();
+        boolean done = parts[1].trim().equals("1");
+        String desc = parts[2].trim();
+        Task t;
+        switch (type) {
+            case "T":
+                t = new Todo(desc);
+                break;
+            case "D":
+                if (parts.length < 4) {
+                    return null;
+                }
+                t = new Deadline(desc, LocalDateTime.parse(parts[3].trim()));
+                break;
+            case "E":
+                if (parts.length < 5) {
+                    return null;
+                }
+                t = new Event(desc, parts[3].trim(), parts[4].trim());
+                break;
+            default:
+                return null;
+        }
+        if (done) {
+            t.markAsDone();
+        }
+        return t;
     }
 }
