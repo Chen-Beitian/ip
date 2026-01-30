@@ -1,0 +1,29 @@
+package momo;
+
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DeadlineTest {
+
+    @Test
+    public void parseBy_dateOnly_returnsStartOfDay() {
+        LocalDateTime dt = Deadline.parseBy("2019-10-15");
+        assertEquals(LocalDateTime.of(2019, 10, 15, 0, 0), dt);
+    }
+
+    @Test
+    public void parseBy_dateTime_returnsExactTime() {
+        LocalDateTime dt = Deadline.parseBy("2019-10-15 1800");
+        assertEquals(LocalDateTime.of(2019, 10, 15, 18, 0), dt);
+    }
+
+    @Test
+    public void parseBy_invalidFormat_throws() {
+        assertThrows(IllegalArgumentException.class, () -> Deadline.parseBy("15-10-2019"));
+        assertThrows(IllegalArgumentException.class, () -> Deadline.parseBy("2019-10-15 18:00"));
+        assertThrows(IllegalArgumentException.class, () -> Deadline.parseBy("random"));
+    }
+}
