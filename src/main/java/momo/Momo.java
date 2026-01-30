@@ -11,6 +11,11 @@ public class Momo {
     private final TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Constructs the Momo application with the given file path.
+     *
+     * @param filePath The file path used for storing tasks.
+     */
     public Momo(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
@@ -18,6 +23,9 @@ public class Momo {
         this.tasks = new TaskList(loaded);
     }
 
+    /**
+     * Runs the main application loop, reading and executing user commands.
+     */
     public void run() {
         ui.printWelcome();
         boolean isExit = false;

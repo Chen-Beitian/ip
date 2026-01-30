@@ -16,6 +16,9 @@ public class Ui {
         System.out.println("    ____________________________________________________________");
     }
 
+    /**
+     * Prints the welcome message when the application starts.
+     */
     public void printWelcome() {
         printLine();
         System.out.println("    Hello! I'm Momo");
@@ -23,18 +26,32 @@ public class Ui {
         printLine();
     }
 
+    /**
+     * Prints an error message to the user.
+     *
+     * @param message The error message to display.
+     */
     public void printError(String message) {
         printLine();
         System.out.println("    " + message);
         printLine();
     }
 
+    /**
+     * Prints the goodbye message before the application exits.
+     */
     public void printGoodbye() {
         printLine();
         System.out.println("    Bye. Hope to see you again soon!");
         printLine();
     }
 
+    /**
+     * Displays a message indicating a task has been added.
+     *
+     * @param task The task that was added.
+     * @param size The total number of tasks after addition.
+     */
     public void showAdded(Task task, int size) {
         printLine();
         System.out.println("    Got it. I've added this task:");
@@ -43,6 +60,12 @@ public class Ui {
         printLine();
     }
 
+    /**
+     * Displays a message indicating a task has been deleted.
+     *
+     * @param task The task that was deleted.
+     * @param size The total number of tasks remaining.
+     */
     public void showDeleted(Task task, int size) {
         printLine();
         System.out.println("    Noted. I've removed this task:");
@@ -51,6 +74,12 @@ public class Ui {
         printLine();
     }
 
+    /**
+     * Displays a message indicating a task has been marked or unmarked.
+     *
+     * @param task The task that was updated.
+     * @param done The new completion status of the task.
+     */
     public void showMarked(Task task, boolean done) {
         printLine();
         System.out.println(done
@@ -60,6 +89,11 @@ public class Ui {
         printLine();
     }
 
+    /**
+     * Displays the list of tasks to the user.
+     *
+     * @param tasks The task list to display.
+     */
     public void showList(TaskList tasks) {
         printLine();
         System.out.println("    Here are the tasks in your list:");
@@ -69,6 +103,11 @@ public class Ui {
         printLine();
     }
 
+    /**
+     * Reads a command entered by the user.
+     *
+     * @return The command string entered by the user.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }

@@ -6,6 +6,14 @@ import java.io.IOException;
  * Parses user input into executable commands.
  */
 public class Parser {
+
+    /**
+     * Parses the user input and returns the corresponding command.
+     *
+     * @param input The user input string.
+     * @return A Command representing the user input.
+     * @throws MomoException If the input is invalid or cannot be parsed.
+     */
     public static Command parse(String input) throws MomoException {
         String trimmed = input == null ? "" : input.trim();
         if (trimmed.isEmpty()) {
