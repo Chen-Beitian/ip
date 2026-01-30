@@ -50,22 +50,13 @@ public class Task {
     }
 
     /**
-     * Returns a string representation of this task for storage.
+     * Returns whether this task's description contains the given keyword.
      *
-     * @return String used to save this task to disk.
+     * @param keyword Keyword to search for.
+     * @return True if the description contains the keyword, false otherwise.
      */
-    public String toStorageString() {
-        return description;
-    }
-
-    /**
-     * Creates a task from a stored string.
-     *
-     * @param line A line read from the storage file.
-     * @return Task created from the given string.
-     */
-    public static Task fromStorageString(String line) {
-        return new Todo(line);
+    public boolean containsKeyword(String keyword) {
+        return description.contains(keyword);
     }
 
     @Override

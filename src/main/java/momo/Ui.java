@@ -1,5 +1,6 @@
 package momo;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -69,6 +70,31 @@ public class Ui {
         printLine();
     }
 
+<<<<<<< Updated upstream
+=======
+    /**
+     * Displays the tasks that match a keyword search.
+     * Matching tasks are numbered starting from 1 in the displayed result.
+     *
+     * @param matchedTasks The list of matching tasks.
+     */
+    public void showFindResults(List<Task> matchedTasks) {
+        printLine();
+        System.out.println("    Here are the matching tasks in your list:");
+        for (int i = 0; i < matchedTasks.size(); i++) {
+            System.out.println("    " + (i + 1) + "." + matchedTasks.get(i));
+        }
+        printLine();
+    }
+
+
+
+    /**
+     * Reads a command entered by the user.
+     *
+     * @return The command string entered by the user.
+     */
+>>>>>>> Stashed changes
     public String readCommand() {
         return scanner.nextLine();
     }
