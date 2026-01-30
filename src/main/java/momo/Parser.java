@@ -1,6 +1,8 @@
 package momo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parses user input into executable commands.
@@ -39,6 +41,8 @@ public class Parser {
                 return parseDeadline(trimmed);
             case "event":
                 return parseEvent(trimmed);
+            case "find":
+                return parseFind(trimmed);
             default:
                 throw new MomoException("Sorry, I haven't learned this instruction yet.");
         }
@@ -115,6 +119,15 @@ public class Parser {
         }
         return new AddCommand(new Event(description, toParts[0].trim(), toParts[1].trim()));
     }
+
+    private static Command parseFind(String trimmed) throws MomoException {
+        String[] parts = trimmed.split("\\s+", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new MomoException("Usage: find <keyword>");
+        }
+        return new FindCommand(parts[1].trim());
+    }
+
 
     private static void saveQuietly(Storage storage, TaskList tasks) {
         try {
@@ -197,4 +210,25 @@ public class Parser {
             ui.showAdded(task, tasks.size());
         }
     }
+
+    private static final class FindCommand extends Command {
+        private final String keyword;
+
+        private FindCommand(String keyword) {
+            this.keyword = keyword;
+        }
+
+        @Override
+        public void execute(TaskList tasks, Ui ui, Storage storage) {
+            List<Task> matched = new ArrayList<>();
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                if (task.containsKeyword(keyword)) {
+                    matched.add(task);
+                }
+            }
+            ui.showFindResults(matched);
+        }
+    }
+
 }
