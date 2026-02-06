@@ -136,10 +136,18 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    /**
+     * Clears all previously accumulated output from the UI buffer.
+     */
     public void resetOutput() {
         buffer.setLength(0);
     }
 
+    /**
+     * Returns all accumulated output from the UI buffer and clears it.
+     *
+     * @return The accumulated output as a string.
+     */
     public String consumeOutput() {
         String out = buffer.toString();
         buffer.setLength(0);
