@@ -9,10 +9,6 @@ import java.util.List;
 public class TaskList {
     private final ArrayList<Task> tasks;
 
-    public TaskList() {
-        this.tasks = new ArrayList<>();
-    }
-
     /**
      * Constructs a TaskList with an initial list of tasks.
      *
