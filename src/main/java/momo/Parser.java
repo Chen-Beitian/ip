@@ -25,26 +25,26 @@ public class Parser {
         String[] parts = trimmed.split("\\s+", 2);
         String command = parts[0];
         switch (command) {
-            case "bye":
-                return new ByeCommand();
-            case "list":
-                return new ListCommand();
-            case "mark":
-                return parseMark(trimmed, true);
-            case "unmark":
-                return parseMark(trimmed, false);
-            case "delete":
-                return parseDelete(trimmed);
-            case "todo":
-                return parseTodo(trimmed);
-            case "deadline":
-                return parseDeadline(trimmed);
-            case "event":
-                return parseEvent(trimmed);
-            case "find":
-                return parseFind(trimmed);
-            default:
-                throw new MomoException("Sorry, I haven't learned this instruction yet.");
+        case "bye":
+            return new ByeCommand();
+        case "list":
+            return new ListCommand();
+        case "mark":
+            return parseMark(trimmed, true);
+        case "unmark":
+            return parseMark(trimmed, false);
+        case "delete":
+            return parseDelete(trimmed);
+        case "todo":
+            return parseTodo(trimmed);
+        case "deadline":
+            return parseDeadline(trimmed);
+        case "event":
+            return parseEvent(trimmed);
+        case "find":
+            return parseFind(trimmed);
+        default:
+            throw new MomoException("Sorry, I haven't learned this instruction yet.");
         }
     }
 

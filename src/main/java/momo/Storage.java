@@ -14,6 +14,11 @@ import java.util.List;
 public class Storage {
     private final Path filePath;
 
+    /**
+     * Creates a storage that reads/writes tasks to the given file path.
+     *
+     * @param filePath Path to the save file.
+     */
     public Storage(String filePath) {
         this.filePath = Paths.get(filePath);
     }
@@ -92,23 +97,23 @@ public class Storage {
         String desc = parts[2].trim();
         Task t;
         switch (type) {
-            case "T":
-                t = new Todo(desc);
-                break;
-            case "D":
-                if (parts.length < 4) {
-                    return null;
-                }
-                t = new Deadline(desc, LocalDateTime.parse(parts[3].trim()));
-                break;
-            case "E":
-                if (parts.length < 5) {
-                    return null;
-                }
-                t = new Event(desc, parts[3].trim(), parts[4].trim());
-                break;
-            default:
+        case "T":
+            t = new Todo(desc);
+            break;
+        case "D":
+            if (parts.length < 4) {
                 return null;
+            }
+            t = new Deadline(desc, LocalDateTime.parse(parts[3].trim()));
+            break;
+        case "E":
+            if (parts.length < 5) {
+                return null;
+            }
+            t = new Event(desc, parts[3].trim(), parts[4].trim());
+            break;
+        default:
+            return null;
         }
         if (done) {
             t.markAsDone();
