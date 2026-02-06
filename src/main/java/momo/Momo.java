@@ -10,6 +10,7 @@ public class Momo {
     private final Storage storage;
     private final TaskList tasks;
     private final Ui ui;
+    private boolean shouldExit = false;
 
     /**
      * Constructs the Momo application with the given file path.
@@ -39,6 +40,22 @@ public class Momo {
                 ui.printError(e.getMessage());
             }
         }
+    }
+
+    public boolean isExit() {
+        return shouldExit;
+    }
+
+    public String getResponse(String input) {
+        ui.resetOutput();
+        try {
+            Command command = Parser.parse(input);
+            command.execute(tasks, ui, storage);
+            shouldExit = command.isExit();
+        } catch (MomoException e) {
+            ui.printError(e.getMessage());
+        }
+        return ui.consumeOutput();
     }
 
     /**
