@@ -8,6 +8,7 @@ import java.util.Scanner;
  */
 public class Ui {
     private final Scanner scanner;
+    private final StringBuilder buffer = new StringBuilder();
 
     /**
      * Constructs the user interface and prepares input reading.
@@ -16,8 +17,13 @@ public class Ui {
         this.scanner = new Scanner(System.in);
     }
 
+    private void appendLine(String line) {
+        buffer.append(line).append(System.lineSeparator());
+        System.out.println(line);
+    }
+
     private void printLine() {
-        System.out.println("    ____________________________________________________________");
+        appendLine("    ____________________________________________________________");
     }
 
     /**
@@ -25,8 +31,8 @@ public class Ui {
      */
     public void printWelcome() {
         printLine();
-        System.out.println("    Hello! I'm Momo");
-        System.out.println("    What can I do for you?");
+        appendLine("    Hello! I'm Momo");
+        appendLine("    What can I do for you?");
         printLine();
     }
 
@@ -37,7 +43,7 @@ public class Ui {
      */
     public void printError(String message) {
         printLine();
-        System.out.println("    " + message);
+        appendLine("    " + message);
         printLine();
     }
 
@@ -46,7 +52,7 @@ public class Ui {
      */
     public void printGoodbye() {
         printLine();
-        System.out.println("    Bye. Hope to see you again soon!");
+        appendLine("    Bye. Hope to see you again soon!");
         printLine();
     }
 
@@ -58,9 +64,9 @@ public class Ui {
      */
     public void showAdded(Task task, int size) {
         printLine();
-        System.out.println("    Got it. I've added this task:");
-        System.out.println("       " + task);
-        System.out.println("    Now you have " + size + " tasks in the list.");
+        appendLine("    Got it. I've added this task:");
+        appendLine("       " + task);
+        appendLine("    Now you have " + size + " tasks in the list.");
         printLine();
     }
 
@@ -72,9 +78,9 @@ public class Ui {
      */
     public void showDeleted(Task task, int size) {
         printLine();
-        System.out.println("    Noted. I've removed this task:");
-        System.out.println("       " + task);
-        System.out.println("    Now you have " + size + " tasks in the list.");
+        appendLine("    Noted. I've removed this task:");
+        appendLine("       " + task);
+        appendLine("    Now you have " + size + " tasks in the list.");
         printLine();
     }
 
@@ -86,10 +92,10 @@ public class Ui {
      */
     public void showMarked(Task task, boolean done) {
         printLine();
-        System.out.println(done
+        appendLine(done
                 ? "    Nice! I've marked this task as done:"
                 : "    OK, I've marked this task as not done yet:");
-        System.out.println("       " + task);
+        appendLine("       " + task);
         printLine();
     }
 
@@ -100,9 +106,9 @@ public class Ui {
      */
     public void showList(TaskList tasks) {
         printLine();
-        System.out.println("    Here are the tasks in your list:");
+        appendLine("    Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println("    " + (i + 1) + "." + tasks.get(i));
+            appendLine("    " + (i + 1) + "." + tasks.get(i));
         }
         printLine();
     }
@@ -114,9 +120,9 @@ public class Ui {
      */
     public void showFindResults(List<Task> matchedTasks) {
         printLine();
-        System.out.println("    Here are the matching tasks in your list:");
+        appendLine("    Here are the matching tasks in your list:");
         for (int i = 0; i < matchedTasks.size(); i++) {
-            System.out.println("    " + (i + 1) + "." + matchedTasks.get(i));
+            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
         }
         printLine();
     }
@@ -128,5 +134,15 @@ public class Ui {
      */
     public String readCommand() {
         return scanner.nextLine();
+    }
+
+    public void resetOutput() {
+        buffer.setLength(0);
+    }
+
+    public String consumeOutput() {
+        String out = buffer.toString();
+        buffer.setLength(0);
+        return out;
     }
 }
