@@ -57,6 +57,7 @@ public class Task {
      * @return True if the description contains the keyword, false otherwise.
      */
     public boolean containsKeyword(String keyword) {
+        assert keyword != null : "Keyword should not be null";
         return description.contains(keyword);
     }
 

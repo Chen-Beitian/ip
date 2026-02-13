@@ -8,6 +8,17 @@ import java.util.List;
  * Parses user input into executable commands.
  */
 public class Parser {
+    private static final String TODO_PREFIX = "todo ";
+    private static final String DEADLINE_PREFIX = "deadline ";
+    private static final String EVENT_PREFIX = "event ";
+
+    private static final String MSG_TODO_EMPTY = "Please provide a task description.";
+    private static final String USAGE_DEADLINE =
+            "Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>";
+    private static final String USAGE_EVENT =
+            "Usage: event <description> /from <start> /to <end>";
+    private static final String MSG_BAD_DATE =
+            "Date must be in yyyy-mm-dd or yyyy-mm-dd HHmm format.";
 
     /**
      * Parses the user input and returns the corresponding command.
@@ -77,45 +88,45 @@ public class Parser {
     }
 
     private static Command parseTodo(String trimmed) throws MomoException {
-        if (!trimmed.startsWith("todo ")) {
-            throw new MomoException("Please provide a task description.");
+        if (!trimmed.startsWith(TODO_PREFIX)) {
+            throw new MomoException(MSG_TODO_EMPTY);
         }
-        String description = trimmed.substring(5).trim();
+        String description = trimmed.substring(TODO_PREFIX.length()).trim();
         if (description.isEmpty()) {
-            throw new MomoException("Please provide a task description.");
+            throw new MomoException(MSG_TODO_EMPTY);
         }
         return new AddCommand(new Todo(description));
     }
 
     private static Command parseDeadline(String trimmed) throws MomoException {
-        if (!trimmed.startsWith("deadline ")) {
-            throw new MomoException("Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>");
+        if (!trimmed.startsWith(DEADLINE_PREFIX)) {
+            throw new MomoException(USAGE_DEADLINE);
         }
-        String rest = trimmed.substring(9).trim();
+        String rest = trimmed.substring(DEADLINE_PREFIX.length()).trim();
         String[] parts = rest.split(" /by ", 2);
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new MomoException("Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>");
+            throw new MomoException(USAGE_DEADLINE);
         }
         try {
             return new AddCommand(new Deadline(parts[0].trim(), Deadline.parseBy(parts[1].trim())));
         } catch (IllegalArgumentException e) {
-            throw new MomoException("Date must be in yyyy-mm-dd or yyyy-mm-dd HHmm format.");
+            throw new MomoException(MSG_BAD_DATE);
         }
     }
 
     private static Command parseEvent(String trimmed) throws MomoException {
-        if (!trimmed.startsWith("event ")) {
-            throw new MomoException("Usage: event <description> /from <start> /to <end>");
+        if (!trimmed.startsWith(EVENT_PREFIX)) {
+            throw new MomoException(USAGE_EVENT);
         }
-        String rest = trimmed.substring(6).trim();
+        String rest = trimmed.substring(EVENT_PREFIX.length()).trim();
         String[] fromParts = rest.split(" /from ", 2);
         if (fromParts.length < 2 || fromParts[0].trim().isEmpty()) {
-            throw new MomoException("Usage: event <description> /from <start> /to <end>");
+            throw new MomoException(USAGE_EVENT);
         }
         String description = fromParts[0].trim();
         String[] toParts = fromParts[1].split(" /to ", 2);
         if (toParts.length < 2 || toParts[0].trim().isEmpty() || toParts[1].trim().isEmpty()) {
-            throw new MomoException("Usage: event <description> /from <start> /to <end>");
+            throw new MomoException(USAGE_EVENT);
         }
         return new AddCommand(new Event(description, toParts[0].trim(), toParts[1].trim()));
     }

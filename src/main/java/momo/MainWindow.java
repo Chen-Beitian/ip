@@ -34,8 +34,8 @@ public class MainWindow extends AnchorPane {
     }
 
     /** Injects the Momo instance */
-    public void setMomo(Momo m) {
-        momo = m;
+    public void setMomo(Momo momo) {
+        this.momo = momo;
     }
 
     /**

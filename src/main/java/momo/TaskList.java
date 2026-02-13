@@ -41,7 +41,6 @@ public class TaskList {
      *
      * @param index The index of the task.
      * @return The task at the specified index.
-     * @throws MomoException If the index is invalid.
      */
     public Task get(int index) {
         assert index >= 0 && index < tasks.size() : "Index out of bounds";
@@ -53,7 +52,6 @@ public class TaskList {
      *
      * @param index The index of the task to delete.
      * @return The deleted task.
-     * @throws MomoException If the index is invalid.
      */
     public Task delete(int index) throws MomoException {
         if (index < 0 || index >= tasks.size()) {
@@ -68,6 +66,6 @@ public class TaskList {
      * @return The list of tasks.
      */
     public List<Task> asListForStorage() {
-        return tasks;
+        return new ArrayList<>(tasks);
     }
 }
