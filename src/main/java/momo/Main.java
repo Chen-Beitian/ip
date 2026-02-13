@@ -12,8 +12,9 @@ import javafx.stage.Stage;
  * A GUI for Momo using FXML.
  */
 public class Main extends Application {
+    private static final String DATA_FILE = "data/momo.txt";
 
-    private final Momo momo = new Momo("data/momo.txt");
+    private final Momo momo = new Momo(DATA_FILE);
 
     @Override
     public void start(Stage stage) {
