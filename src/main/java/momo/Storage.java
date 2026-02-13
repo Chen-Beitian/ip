@@ -42,9 +42,8 @@ public class Storage {
         try {
             for (String line : Files.readAllLines(filePath)) {
                 Task task = parseLine(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
+                assert task != null : "Parsed task should not be null";
+                tasks.add(task);
             }
         } catch (IOException e) {
             // If loading fails unexpectedly, start with an empty list to keep the app usable.
