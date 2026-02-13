@@ -35,11 +35,11 @@ public class Storage {
         try {
             for (String line : Files.readAllLines(filePath)) {
                 Task task = parseLine(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
+                assert task != null : "Parsed task should not be null";
+                tasks.add(task);
             }
         } catch (IOException e) {
+            assert false : "Unexpected IO error during load";
             return new ArrayList<>();
         }
         return tasks;

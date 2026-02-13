@@ -44,6 +44,7 @@ public class TaskList {
      * @throws MomoException If the index is invalid.
      */
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds";
         return tasks.get(index);
     }
 
