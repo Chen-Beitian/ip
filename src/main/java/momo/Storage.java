@@ -69,17 +69,25 @@ public class Storage {
 
     private static String toLine(Task task) {
         String done = task.isDone() ? DONE : NOT_DONE;
+        String tagsField = task.getTagsForStorage();
+
+        String base;
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return TYPE_DEADLINE + FIELD_SEP + done + FIELD_SEP + task.description
-                    + FIELD_SEP + deadline.getBy().toString();
-        }
-        if (task instanceof Event) {
+            base = TYPE_DEADLINE + FIELD_SEP + done + FIELD_SEP + task.description
+                    + FIELD_SEP + deadline.getBy();
+        } else if (task instanceof Event) {
             Event event = (Event) task;
-            return TYPE_EVENT + FIELD_SEP + done + FIELD_SEP + task.description + FIELD_SEP + event.getFrom()
+            base = TYPE_EVENT + FIELD_SEP + done + FIELD_SEP + task.description + FIELD_SEP + event.getFrom()
                     + FIELD_SEP + event.getTo();
+        } else {
+            base = TYPE_TODO + FIELD_SEP + done + FIELD_SEP + task.description;
         }
-        return TYPE_TODO + FIELD_SEP + done + FIELD_SEP + task.description;
+
+        if (tagsField.isEmpty()) {
+            return base;
+        }
+        return base + FIELD_SEP + tagsField;
     }
 
     private static Task parseLine(String line) {
@@ -90,7 +98,9 @@ public class Storage {
         if (trimmed.isEmpty()) {
             return null;
         }
+
         String[] parts = trimmed.split(FIELD_SPLIT_REGEX);
+
         if (parts.length >= 2 && (parts[0].equals(NOT_DONE) || parts[0].equals(DONE))) {
             Task t = new Todo(parts[1].trim());
             if (parts[0].equals(DONE)) {
@@ -98,34 +108,52 @@ public class Storage {
             }
             return t;
         }
+
         if (parts.length < 3) {
             return null;
         }
+
         String type = parts[0].trim();
         boolean done = parts[1].trim().equals(DONE);
         String desc = parts[2].trim();
+
         Task t;
+        String tagsField = "";
+
         switch (type) {
         case TYPE_TODO:
             t = new Todo(desc);
+            if (parts.length >= 4) {
+                tagsField = parts[3].trim();
+            }
             break;
         case TYPE_DEADLINE:
             if (parts.length < 4) {
                 return null;
             }
             t = new Deadline(desc, LocalDateTime.parse(parts[3].trim()));
+            if (parts.length >= 5) {
+                tagsField = parts[4].trim();
+            }
             break;
         case TYPE_EVENT:
             if (parts.length < 5) {
                 return null;
             }
             t = new Event(desc, parts[3].trim(), parts[4].trim());
+            if (parts.length >= 6) {
+                tagsField = parts[5].trim();
+            }
             break;
         default:
             return null;
         }
+
         if (done) {
             t.markAsDone();
+        }
+        if (!tagsField.isEmpty()) {
+            t.loadTagsFromStorage(tagsField);
         }
         return t;
     }

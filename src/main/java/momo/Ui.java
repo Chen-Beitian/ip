@@ -128,6 +128,63 @@ public class Ui {
     }
 
     /**
+     * Displays a message indicating tags have been added to a task.
+     *
+     * @param task The task that was tagged.
+     * @param tags The tags added (as entered by the user, e.g. "#fun").
+     */
+    public void showTagged(Task task, List<String> tags) {
+        printLine();
+        appendLine("    OK, I've added these tags to the task:");
+        appendLine("       " + formatTagList(tags));
+        appendLine("       " + task);
+        printLine();
+    }
+
+    /**
+     * Displays a message indicating tags have been removed from a task.
+     *
+     * @param task The task that was untagged.
+     * @param tags The tags removed (as entered by the user, e.g. "#fun").
+     */
+    public void showUntagged(Task task, List<String> tags) {
+        printLine();
+        appendLine("    OK, I've removed these tags from the task:");
+        appendLine("       " + formatTagList(tags));
+        appendLine("       " + task);
+        printLine();
+    }
+
+    /**
+     * Displays tasks that match a tag filter.
+     *
+     * @param tagToken The tag token (e.g. "#fun").
+     * @param matchedTasks The list of tasks that have the tag.
+     */
+    public void showFilterResults(String tagToken, List<Task> matchedTasks) {
+        printLine();
+        appendLine("    Here are the tasks tagged with " + tagToken + ":");
+        for (int i = 0; i < matchedTasks.size(); i++) {
+            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
+        }
+        printLine();
+    }
+
+    private String formatTagList(List<String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tags.size(); i++) {
+            if (i > 0) {
+                sb.append(" ");
+            }
+            sb.append(tags.get(i));
+        }
+        return sb.toString();
+    }
+
+    /**
      * Reads a command entered by the user.
      *
      * @return The command string entered by the user.
