@@ -67,3 +67,14 @@ bye
 ---
 ## Saving Data
 Tasks are saved automatically and loaded when the application starts.
+
+---
+## Acknowledgements
+AI Assistance:
+ChatGPT was used for
+- Code review and refactoring suggestions
+- Brainstorming test cases
+- API usage clarification
+- Documentation improvements
+- Generate the avatar images used in the UI
+All code was manually reviewed and adapted before integration.
