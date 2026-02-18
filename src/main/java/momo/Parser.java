@@ -16,7 +16,8 @@ public class Parser {
     private static final String USAGE_DEADLINE =
             "Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HH:mm>";
     private static final String USAGE_EVENT =
-            "Usage: event <description> /from <start> /to <end>";
+            "Usage: event <description> /from <yyyy-mm-dd or yyyy-mm-dd HH:mm> "
+                    + "/to <yyyy-mm-dd or yyyy-mm-dd HH:mm>";
     private static final String MSG_BAD_DATE =
             "Date must be in yyyy-mm-dd or yyyy-mm-dd HH:mm format.";
     private static final String USAGE_TAG = "Usage: tag <index> #tag ...";
