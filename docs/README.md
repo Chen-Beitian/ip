@@ -180,6 +180,7 @@ untag 2 #urgent #school
 ### Filtering by Tag
 
 Displays tasks that contain the specified tag.
+The tag must start with `#`.
 
 Format:
 ```
