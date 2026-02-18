@@ -143,32 +143,36 @@ find book
 
 ### Tagging a Task
 
-Adds a tag to an existing task.
+Adds one or more tags to an existing task.  
+You can specify multiple tags in a single command.
 
 Format:
 ```
-tag INDEX #TAG_NAME
+tag INDEX #TAG_NAME [#TAG_NAME]...
 ```
 
-Example:
+Examples:
 ```
 tag 2 #urgent
+tag 2 #urgent #school
 ```
 
 ---
 
 ### Removing a Tag
 
-Removes a tag from an existing task.
+Removes one or more tags from an existing task.  
+You can specify multiple tags in a single command.
 
 Format:
 ```
-untag INDEX #TAG_NAME
+untag INDEX #TAG_NAME [#TAG_NAME]...
 ```
 
 Example:
 ```
 untag 2 #urgent
+untag 2 #urgent #school
 ```
 
 ---
