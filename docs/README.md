@@ -204,3 +204,22 @@ bye
 ## Saving Data
 
 Tasks are saved automatically to a local file and loaded when the application starts.
+
+---
+
+## Command Summary
+
+| Action       | Format |
+|--------------|--------|
+| Add todo     | `todo DESCRIPTION` |
+| Add deadline | `deadline DESCRIPTION /by ...` |
+| Add event    | `event DESCRIPTION /from ... /to ...` |
+| Show List    | `list` |
+| Mark         | `mark INDEX` |
+| Unmark       | `unmark INDEX` |
+| Delete       | `delete INDEX` |
+| Find         | `find KEYWORD` |
+| Tag          | `tag INDEX #TAG...` |
+| Untag        | `untag INDEX #TAG...` |
+| Filter       | `filter #TAG` |
+| Exit         | `bye` |
