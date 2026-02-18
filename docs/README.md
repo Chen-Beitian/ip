@@ -12,7 +12,9 @@ It allows you to manage todos, deadlines, and events efficiently through a comma
 3. Open a terminal and navigate to the folder containing the jar file.
 4. Run `java -jar momo.jar`.
 5. The GUI should appear as shown below:
+
    <img src="Ui.png" alt="UI" width="600">
+
 6. Type commands into the input box and press Enter or click the "Send" button.
 
 ---
