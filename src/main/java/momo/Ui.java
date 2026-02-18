@@ -22,18 +22,12 @@ public class Ui {
         System.out.println(line);
     }
 
-    private void printLine() {
-        appendLine("    ____________________________________________________________");
-    }
-
     /**
      * Prints the welcome message when the application starts.
      */
     public void printWelcome() {
-        printLine();
-        appendLine("    Hello! I'm Momo");
-        appendLine("    What can I do for you?");
-        printLine();
+        appendLine("Hello! I'm Momo.");
+        appendLine("What can I do for you?");
     }
 
     /**
@@ -42,18 +36,14 @@ public class Ui {
      * @param message The error message to display.
      */
     public void printError(String message) {
-        printLine();
-        appendLine("    " + message);
-        printLine();
+        appendLine(message);
     }
 
     /**
      * Prints the goodbye message before the application exits.
      */
     public void printGoodbye() {
-        printLine();
-        appendLine("    Bye. Hope to see you again soon!");
-        printLine();
+        appendLine("Bye. Hope to see you again soon!");
     }
 
     /**
@@ -63,11 +53,9 @@ public class Ui {
      * @param size The total number of tasks after addition.
      */
     public void showAdded(Task task, int size) {
-        printLine();
-        appendLine("    Got it. I've added this task:");
-        appendLine("       " + task);
-        appendLine("    Now you have " + size + " tasks in the list.");
-        printLine();
+        appendLine("Got it. I've added this task:");
+        appendLine("    " + task);
+        appendLine("Now you have " + size + " tasks in the list.");
     }
 
     /**
@@ -77,11 +65,9 @@ public class Ui {
      * @param size The total number of tasks remaining.
      */
     public void showDeleted(Task task, int size) {
-        printLine();
-        appendLine("    Noted. I've removed this task:");
-        appendLine("       " + task);
-        appendLine("    Now you have " + size + " tasks in the list.");
-        printLine();
+        appendLine("Noted. I've removed this task:");
+        appendLine("    " + task);
+        appendLine("Now you have " + size + " tasks in the list.");
     }
 
     /**
@@ -91,12 +77,10 @@ public class Ui {
      * @param done The new completion status of the task.
      */
     public void showMarked(Task task, boolean done) {
-        printLine();
         appendLine(done
-                ? "    Nice! I've marked this task as done:"
-                : "    OK, I've marked this task as not done yet:");
-        appendLine("       " + task);
-        printLine();
+                ? "Nice! I've marked this task as done:"
+                : "OK, I've marked this task as not done yet:");
+        appendLine("    " + task);
     }
 
     /**
@@ -105,12 +89,10 @@ public class Ui {
      * @param tasks The task list to display.
      */
     public void showList(TaskList tasks) {
-        printLine();
-        appendLine("    Here are the tasks in your list:");
+        appendLine("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             appendLine("    " + (i + 1) + "." + tasks.get(i));
         }
-        printLine();
     }
 
     /**
@@ -119,12 +101,10 @@ public class Ui {
      * @param matchedTasks The list of matching tasks.
      */
     public void showFindResults(List<Task> matchedTasks) {
-        printLine();
-        appendLine("    Here are the matching tasks in your list:");
+        appendLine("Here are the matching tasks in your list:");
         for (int i = 0; i < matchedTasks.size(); i++) {
-            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
+            appendLine((i + 1) + "." + matchedTasks.get(i));
         }
-        printLine();
     }
 
     /**
@@ -134,11 +114,9 @@ public class Ui {
      * @param tags The tags added (as entered by the user, e.g. "#fun").
      */
     public void showTagged(Task task, List<String> tags) {
-        printLine();
-        appendLine("    OK, I've added these tags to the task:");
-        appendLine("       " + formatTagList(tags));
-        appendLine("       " + task);
-        printLine();
+        appendLine("OK, I've added these tags to the task:");
+        appendLine("    " + formatTagList(tags));
+        appendLine("    " + task);
     }
 
     /**
@@ -148,11 +126,9 @@ public class Ui {
      * @param tags The tags removed (as entered by the user, e.g. "#fun").
      */
     public void showUntagged(Task task, List<String> tags) {
-        printLine();
-        appendLine("    OK, I've removed these tags from the task:");
-        appendLine("       " + formatTagList(tags));
-        appendLine("       " + task);
-        printLine();
+        appendLine("OK, I've removed these tags from the task:");
+        appendLine("    " + formatTagList(tags));
+        appendLine("    " + task);
     }
 
     /**
@@ -162,12 +138,10 @@ public class Ui {
      * @param matchedTasks The list of tasks that have the tag.
      */
     public void showFilterResults(String tagToken, List<Task> matchedTasks) {
-        printLine();
-        appendLine("    Here are the tasks tagged with " + tagToken + ":");
+        appendLine("Here are the tasks tagged with " + tagToken + ":");
         for (int i = 0; i < matchedTasks.size(); i++) {
-            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
+            appendLine((i + 1) + "." + matchedTasks.get(i));
         }
-        printLine();
     }
 
     private String formatTagList(List<String> tags) {

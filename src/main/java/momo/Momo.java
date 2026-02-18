@@ -46,6 +46,12 @@ public class Momo {
         return shouldExit;
     }
 
+    public String getWelcomeMessage() {
+        ui.resetOutput();
+        ui.printWelcome();
+        return ui.consumeOutput();
+    }
+
     public String getResponse(String input) {
         ui.resetOutput();
         try {
