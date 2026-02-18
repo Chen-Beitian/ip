@@ -1,3 +1,0 @@
-# Momo
-
-![UI](Ui.png)
