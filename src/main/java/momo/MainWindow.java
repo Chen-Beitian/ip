@@ -36,6 +36,8 @@ public class MainWindow extends AnchorPane {
     /** Injects the Momo instance */
     public void setMomo(Momo momo) {
         this.momo = momo;
+        dialogContainer.getChildren().add(
+                DialogBox.getMomoDialog(momo.getWelcomeMessage(), momoImage));
     }
 
     /**
@@ -54,7 +56,10 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
 
         if (momo.isExit()) {
-            javafx.application.Platform.exit();
+            javafx.animation.PauseTransition delay =
+                    new javafx.animation.PauseTransition(javafx.util.Duration.seconds(0.8));
+            delay.setOnFinished(event -> javafx.application.Platform.exit());
+            delay.play();
         }
     }
 }
