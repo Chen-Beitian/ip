@@ -46,13 +46,12 @@ public class Deadline extends Task {
         if (trimmed.matches("\\d{4}-\\d{2}-\\d{2}")) {
             return LocalDate.parse(trimmed).atStartOfDay();
         }
-        if (trimmed.matches("\\d{4}-\\d{2}-\\d{2}\\s+\\d{4}")) {
-            String[] parts = trimmed.split("\\s+");
-            LocalDate date = LocalDate.parse(parts[0]);
-            LocalTime time = LocalTime.parse(parts[1], DateTimeFormatter.ofPattern("HHmm"));
-            return LocalDateTime.of(date, time);
+        if (trimmed.matches("\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}")) {
+            return LocalDateTime.parse(trimmed,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         }
-        throw new IllegalArgumentException("Invalid date/time format");
+        throw new IllegalArgumentException(
+                "Date must be in yyyy-MM-dd or yyyy-MM-dd HH:mm format.");
     }
 
     @Override

@@ -23,11 +23,11 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-
+            stage.setTitle("Momo");
             fxmlLoader.<MainWindow>getController().setMomo(momo);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to load GUI. Please try again.");
         }
     }
 }

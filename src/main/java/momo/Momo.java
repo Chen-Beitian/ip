@@ -29,29 +29,45 @@ public class Momo {
      */
     public void run() {
         ui.printWelcome();
-        boolean isExit = false;
-        while (!isExit) {
+        shouldExit = false;
+        while (!shouldExit) {
             try {
                 String fullCommand = ui.readCommand();
                 Command command = Parser.parse(fullCommand);
                 command.execute(tasks, ui, storage);
-                isExit = command.isExit();
+                shouldExit = command.isExit();
             } catch (MomoException e) {
                 ui.printError(e.getMessage());
             }
         }
     }
 
+    /**
+     * Returns whether the application should exit after processing the latest command.
+     *
+     * @return True if the application should exit, otherwise false.
+     */
     public boolean isExit() {
         return shouldExit;
     }
 
+    /**
+     * Returns the welcome message to be displayed in the UI.
+     *
+     * @return The welcome message.
+     */
     public String getWelcomeMessage() {
         ui.resetOutput();
         ui.printWelcome();
         return ui.consumeOutput();
     }
 
+    /**
+     * Processes a user input string and returns the response to be displayed in the UI.
+     *
+     * @param input The user input command.
+     * @return The response message for the UI.
+     */
     public String getResponse(String input) {
         ui.resetOutput();
         try {

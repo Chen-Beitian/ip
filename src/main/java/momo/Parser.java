@@ -14,11 +14,11 @@ public class Parser {
 
     private static final String MSG_TODO_EMPTY = "Please provide a task description.";
     private static final String USAGE_DEADLINE =
-            "Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HHmm>";
+            "Usage: deadline <description> /by <yyyy-mm-dd or yyyy-mm-dd HH:mm>";
     private static final String USAGE_EVENT =
             "Usage: event <description> /from <start> /to <end>";
     private static final String MSG_BAD_DATE =
-            "Date must be in yyyy-mm-dd or yyyy-mm-dd HHmm format.";
+            "Date must be in yyyy-mm-dd or yyyy-mm-dd HH:mm format.";
     private static final String USAGE_TAG = "Usage: tag <index> #tag ...";
     private static final String USAGE_UNTAG = "Usage: untag <index> #tag ...";
     private static final String USAGE_FILTER = "Usage: filter #tag";
@@ -166,11 +166,22 @@ public class Parser {
             throw new MomoException(USAGE_EVENT);
         }
 
-        Task task = new Event(desc.cleanedText, from.cleanedText, to.cleanedText);
-        addTagsToTask(task, desc.tags);
-        addTagsToTask(task, from.tags);
-        addTagsToTask(task, to.tags);
-        return new AddCommand(task);
+        try {
+            java.time.LocalDateTime start = Deadline.parseBy(from.cleanedText);
+            java.time.LocalDateTime end = Deadline.parseBy(to.cleanedText);
+
+            if (end.isBefore(start)) {
+                throw new MomoException("End time cannot be before start time.");
+            }
+
+            Task task = new Event(desc.cleanedText, start, end);
+            addTagsToTask(task, desc.tags);
+            addTagsToTask(task, from.tags);
+            addTagsToTask(task, to.tags);
+            return new AddCommand(task);
+        } catch (IllegalArgumentException e) {
+            throw new MomoException(MSG_BAD_DATE);
+        }
     }
 
     private static Command parseFind(String trimmed) throws MomoException {

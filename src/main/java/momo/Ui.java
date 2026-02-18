@@ -103,7 +103,7 @@ public class Ui {
     public void showFindResults(List<Task> matchedTasks) {
         appendLine("Here are the matching tasks in your list:");
         for (int i = 0; i < matchedTasks.size(); i++) {
-            appendLine((i + 1) + "." + matchedTasks.get(i));
+            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
         }
     }
 
@@ -140,7 +140,7 @@ public class Ui {
     public void showFilterResults(String tagToken, List<Task> matchedTasks) {
         appendLine("Here are the tasks tagged with " + tagToken + ":");
         for (int i = 0; i < matchedTasks.size(); i++) {
-            appendLine((i + 1) + "." + matchedTasks.get(i));
+            appendLine("    " + (i + 1) + "." + matchedTasks.get(i));
         }
     }
 

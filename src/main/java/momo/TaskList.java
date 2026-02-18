@@ -52,6 +52,7 @@ public class TaskList {
      *
      * @param index The index of the task to delete.
      * @return The deleted task.
+     * @throws MomoException If the index is out of range.
      */
     public Task delete(int index) throws MomoException {
         if (index < 0 || index >= tasks.size()) {

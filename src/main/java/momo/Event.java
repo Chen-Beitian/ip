@@ -1,11 +1,16 @@
 package momo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a task that occurs within a time range.
  */
 public class Event extends Task {
-    private final String from;
-    private final String to;
+    private static final DateTimeFormatter OUTPUT_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /**
      * Constructs an event task.
@@ -14,8 +19,10 @@ public class Event extends Task {
      * @param from Start time string.
      * @param to End time string.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
+        assert from != null : "Start time must not be null";
+        assert to != null : "End time must not be null";
         this.from = from;
         this.to = to;
     }
@@ -25,7 +32,7 @@ public class Event extends Task {
      *
      * @return Start time string.
      */
-    public String getFrom() {
+    public LocalDateTime getFrom() {
         return from;
     }
 
@@ -34,13 +41,14 @@ public class Event extends Task {
      *
      * @return End time string.
      */
-    public String getTo() {
+    public LocalDateTime getTo() {
         return to;
     }
 
     @Override
     public String toString() {
         return "[E]" + super.toString()
-                + " (from: " + from + " to: " + to + ")";
+                + " (from: " + from.format(OUTPUT_FORMAT)
+                + " to: " + to.format(OUTPUT_FORMAT) + ")";
     }
 }

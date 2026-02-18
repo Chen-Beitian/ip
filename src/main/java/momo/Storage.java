@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class Storage {
     private static final String NOT_DONE = "0";
     private static final String FIELD_SEP = " | ";
     private static final String FIELD_SPLIT_REGEX = "\\s*\\|\\s*";
+    private static final DateTimeFormatter STORAGE_DATE_TIME =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final Path filePath;
 
     /**
@@ -42,11 +45,12 @@ public class Storage {
         try {
             for (String line : Files.readAllLines(filePath)) {
                 Task task = parseLine(line);
-                assert task != null : "Parsed task should not be null";
-                tasks.add(task);
+                if (task != null) {
+                    tasks.add(task);
+                }
             }
         } catch (IOException e) {
-            // If loading fails unexpectedly, start with an empty list to keep the app usable.
+            System.err.println("Warning: failed to load tasks, starting with empty list.");
             return new ArrayList<>();
         }
         return tasks;
@@ -59,7 +63,10 @@ public class Storage {
      * @throws IOException If writing fails.
      */
     public void save(List<Task> tasks) throws IOException {
-        Files.createDirectories(filePath.getParent());
+        Path parent = filePath.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
         List<String> lines = new ArrayList<>();
         for (Task t : tasks) {
             lines.add(toLine(t));
@@ -75,11 +82,12 @@ public class Storage {
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
             base = TYPE_DEADLINE + FIELD_SEP + done + FIELD_SEP + task.description
-                    + FIELD_SEP + deadline.getBy();
+                    + FIELD_SEP + deadline.getBy().format(STORAGE_DATE_TIME);
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            base = TYPE_EVENT + FIELD_SEP + done + FIELD_SEP + task.description + FIELD_SEP + event.getFrom()
-                    + FIELD_SEP + event.getTo();
+            base = TYPE_EVENT + FIELD_SEP + done + FIELD_SEP + task.description
+                    + FIELD_SEP + event.getFrom().format(STORAGE_DATE_TIME)
+                    + FIELD_SEP + event.getTo().format(STORAGE_DATE_TIME);
         } else {
             base = TYPE_TODO + FIELD_SEP + done + FIELD_SEP + task.description;
         }
@@ -101,7 +109,7 @@ public class Storage {
 
         String[] parts = trimmed.split(FIELD_SPLIT_REGEX);
 
-        if (parts.length >= 2 && (parts[0].equals(NOT_DONE) || parts[0].equals(DONE))) {
+        if (parts.length == 2 && (parts[0].equals(NOT_DONE) || parts[0].equals(DONE))) {
             Task t = new Todo(parts[1].trim());
             if (parts[0].equals(DONE)) {
                 t.markAsDone();
@@ -131,7 +139,7 @@ public class Storage {
             if (parts.length < 4) {
                 return null;
             }
-            t = new Deadline(desc, LocalDateTime.parse(parts[3].trim()));
+            t = new Deadline(desc, Deadline.parseBy(parts[3].trim()));
             if (parts.length >= 5) {
                 tagsField = parts[4].trim();
             }
@@ -140,7 +148,9 @@ public class Storage {
             if (parts.length < 5) {
                 return null;
             }
-            t = new Event(desc, parts[3].trim(), parts[4].trim());
+            LocalDateTime from = Deadline.parseBy(parts[3].trim());
+            LocalDateTime to = Deadline.parseBy(parts[4].trim());
+            t = new Event(desc, from, to);
             if (parts.length >= 6) {
                 tagsField = parts[5].trim();
             }

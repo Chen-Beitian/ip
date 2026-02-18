@@ -28,12 +28,19 @@ public class MainWindow extends AnchorPane {
     private final Image momoImage =
             new Image(this.getClass().getResourceAsStream("/images/Momo.png"));
 
+    /**
+     * Initializes the main window by binding the scroll pane to the dialog container height.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Momo instance */
+    /**
+     * Injects the Momo instance and shows the welcome message.
+     *
+     * @param momo The Momo instance to use.
+     */
     public void setMomo(Momo momo) {
         this.momo = momo;
         dialogContainer.getChildren().add(

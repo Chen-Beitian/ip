@@ -30,7 +30,9 @@ public class StorageTest {
         Storage storage = new Storage(file.toString());
         Todo t1 = new Todo("read");
         Deadline d1 = new Deadline("return book", LocalDateTime.of(2019, 12, 2, 18, 0));
-        Event e1 = new Event("meeting", "2020-01-01", "2020-01-02");
+        Event e1 = new Event("meeting",
+                Deadline.parseBy("2020-01-01 10:00"),
+                Deadline.parseBy("2020-01-01 12:00"));
         d1.markAsDone();
         storage.save(List.of(t1, d1, e1));
         List<Task> loaded = storage.load();

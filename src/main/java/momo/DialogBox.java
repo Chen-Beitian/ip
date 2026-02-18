@@ -31,9 +31,8 @@ public class DialogBox extends HBox {
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to load DialogBox.fxml", e);
         }
-
         dialog.setText(text);
         displayPicture.setImage(img);
     }
@@ -49,10 +48,24 @@ public class DialogBox extends HBox {
         dialog.getStyleClass().add("reply-label");
     }
 
+    /**
+     * Creates a dialog box representing the user's message.
+     *
+     * @param text Message text.
+     * @param img User avatar image.
+     * @return A DialogBox configured for the user.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box representing Momo's message.
+     *
+     * @param text The message text to display.
+     * @param img The avatar image to show beside the message.
+     * @return A DialogBox configured as Momo's dialog.
+     */
     public static DialogBox getMomoDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.flip();
