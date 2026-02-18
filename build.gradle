@@ -65,7 +65,7 @@ run{
 jar {
     manifest {
         attributes(
-            'Main-Class': 'momo.Momo'
+            'Main-Class': 'momo.Launcher'
         )
     }
 }
